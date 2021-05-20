@@ -12,7 +12,7 @@ class ListsController < ApplicationController
     @list = List.new(list_params)
     # we need `list_id` to associate list with corresponding list
     @list.save
-    redirect_to list_path
+    redirect_to list_path(@list)
   end
 
   def show

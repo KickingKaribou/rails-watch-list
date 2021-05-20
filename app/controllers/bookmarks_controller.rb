@@ -13,7 +13,8 @@ class BookmarksController < ApplicationController
   end
 
   def destroy
-    @bookmark.delete
+    @bookmark = Bookmark.find(params[:id])
+    @bookamrk.destroy
   end
 
   private
