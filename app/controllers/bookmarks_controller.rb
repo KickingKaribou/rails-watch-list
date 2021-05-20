@@ -1,26 +1,37 @@
 class BookmarksController < ApplicationController
+  before_action :set_bookmark, only: :destroy
+  before_action :set_list, only: [:new, :create]
+
   def new
     @bookmark = Bookmark.new
   end
 
   def create
     @bookmark = Bookmark.new(bookmark_params)
-    # we need `list_id` to associate bookmark with corresponding list
-    @list = list.find(params[:list_id])
     @bookmark.list = @list
-    @bookmark.save
-    redirect_to list_path(@list)
+    if @bookmark.save
+      redirect_to list_path(@list)
+    else
+      render :new
+    end
   end
 
   def destroy
-    @bookmark = Bookmark.find(params[:id])
-    @bookamrk.destroy
+    @bookmark.destroy
+    redirect_to list_path(@bookmark.list)
   end
 
   private
 
   def bookmark_params
-    params.require(:bookmark).permit(:comment)
+    params.require(:bookmark).permit(:comment, :movie_id)
   end
-  
+
+  def set_bookmark
+    @bookmark = Bookmark.find(params[:id])
+  end
+
+  def set_list
+    @list = List.find(params[:list_id])
+  end
 end
